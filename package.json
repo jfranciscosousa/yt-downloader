@@ -1,0 +1,19 @@
+{
+  "name": "yt-downloader-cli",
+  "version": "0.0.1",
+  "description": "Download list of youtube links",
+  "main": "index.js",
+  "scripts": {
+    "test": "yt-downloader <links.txt>"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none, right now"
+  },
+  "keywords": [
+    "yt",
+    "download"
+  ],
+  "author": "José Sousa",
+  "license": "MIT"
+}

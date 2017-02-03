@@ -1,4 +1,7 @@
 # yt-downloader
+
+[![NPM](https://nodei.co/npm/yt-downloader.png)](https://npmjs.org/package/yt-downloader)
+
 Useless nodeJS based Youtube to mp3 donwloader.
 
 Installation:

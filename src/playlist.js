@@ -1,46 +1,35 @@
-let axios = require('axios').default;
-let util = require('util');
-let apiKey = 'AIzaSyA1Zv7gKh5pSX67ylmUygUx0vWUQeAXCjo';
+let axios = require("axios").default;
+let util = require("util");
+let apiKey = "AIzaSyA1Zv7gKh5pSX67ylmUygUx0vWUQeAXCjo";
 
-const playlistItemURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
-const URLFormat = '%s?part=contentDetails&maxResults=%s&playlistId=%s&key=%s';
+const playlistItemURL = "https://www.googleapis.com/youtube/v3/playlistItems";
+const URLFormat = "%s?part=contentDetails&maxResults=%s&playlistId=%s&key=%s";
 
 /**
  * Synchrousnly populates an array with video IDs from a youtube playlist
  *
  * @param {string} id The ID of the playlist
- * @param {callback} callback The callback to execute when the videos are
- * fully retrieved
+ * @return {Promise}
  */
-exports.getPlaylistVideos = function(id, callback) {
+exports.getPlaylistVideos = async id => {
   let videos = [];
-  recurse(id, null, videos, callback);
+  let pageToken;
+  let done = false;
+
+  while (!done) {
+    let playlistData = (await getPlaylistItems(id, 1, pageToken)).data;
+
+    playlistData.items.forEach(item => {
+      videos.push(idToUrl(item.contentDetails.videoId));
+    });
+
+    pageToken = playlistData.nextPageToken;
+
+    if (!pageToken) done = true;
+  }
+
+  return videos;
 };
-
-/**
- * Auxiliary function to recursively fill an array with video links
- *
- * @param {string} id The ID of the playlist
- * @param {string} pageToken The page token of the page to access
- * @param {Array.string} videos An array to fill with video links
- * @param {callback} callback The callback to execute when there
- * are no more pages
- */
-function recurse(id, pageToken, videos, callback) {
-  getPlaylistItems(id, 1, pageToken)
-    .then((response) => {
-      let playlistItems = response.data;
-
-      playlistItems.items.forEach((item) => {
-        videos.push(idToUrl(item.contentDetails.videoId));
-      });
-
-      pageToken = playlistItems.nextPageToken;
-
-      if (pageToken) return recurse(id, pageToken, videos, callback);
-      else return callback(null, videos);
-    }).catch((err) => callback(err, null));
-}
 
 /**
  * Auxiliary function to convert a youtube id to a full url
@@ -49,7 +38,7 @@ function recurse(id, pageToken, videos, callback) {
  * @return {string} string The full video URL
  */
 function idToUrl(id) {
-  return 'https://www.youtube.com/watch?v=' + id;
+  return "https://www.youtube.com/watch?v=" + id;
 }
 
 /**
@@ -61,12 +50,7 @@ function idToUrl(id) {
  * @return {Promise} the video IDs
  */
 function getPlaylistItems(id, maxResults, pageToken) {
-  let url = util.format(
-    URLFormat,
-    playlistItemURL,
-    maxResults,
-    id,
-    apiKey);
+  let url = util.format(URLFormat, playlistItemURL, maxResults, id, apiKey);
 
   if (pageToken) url = url.concat(`&pageToken=${pageToken}`);
 

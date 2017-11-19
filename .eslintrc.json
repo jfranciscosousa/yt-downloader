@@ -1,13 +1,11 @@
 {
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "sourceType": "module"
+        "ecmaVersion": 2017
     },
     "extends": [
         "eslint:recommended",
-        "google"
+        "google",
+        "prettier"
     ],
     "env": {
         "browser": true,
@@ -16,7 +14,6 @@
         "node": true
     },
     "rules": {
-        "no-console": "off",
-        "max-len": ["error", 100]
+        "no-console": "off"
     }
 }

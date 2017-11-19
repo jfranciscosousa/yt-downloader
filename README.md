@@ -23,14 +23,24 @@ Downloads a video:
 yt-downloader video &lt;url&gt;
 </pre>
 
-Download a list of videos from a file:
+Download videos from a playlist:
 <pre>
-yt-downloader file &lt;file with links&gt;
+yt-downloader playlist_video &lt;playlist link&gt;
 </pre>
 
-Download a playlist:
+Download audio files from a playlist:
 <pre>
-yt-downloader playlist &lt;playlist link&gt;
+yt-downloader playlist_audio &lt;playlist link&gt;
+</pre>
+
+Download a list of videos from a file converting them to video:
+<pre>
+yt-downloader file_video &lt;file with links&gt;
+</pre>
+
+Download a list of videos from a file converting them to audio:
+<pre>
+yt-downloader file_audio &lt;file with links&gt;
 </pre>
 
 File example:
